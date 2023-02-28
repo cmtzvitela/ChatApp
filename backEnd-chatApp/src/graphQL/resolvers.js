@@ -1,17 +1,22 @@
-import User from '../models/user.js';
+import UserAPI from './dataSource.js';
+
 const resolvers = {
   Query: {
     me() {
       return {
-        email: 'carlos@intek.com',
-        friends: [],
+        email,
+        name,
+        friends,
       };
     },
   },
   Mutation: {
-    async newUser(_, { input }, User) {
-      newUser = await User.create(input)
-      return newUser
+    async createUser(_, { input }) {
+      const newUser = UserAPI.createUser({ input });
+      console.log(newUser);
+      return newUser;
+      // const newUser = await User.create(input);
+      // return newUser;
     },
   },
 };

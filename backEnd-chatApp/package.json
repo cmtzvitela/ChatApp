@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "apollo-datasource-mongodb": "^0.5.4",
+    "apollo-datasource-rest": "^3.7.0",
     "apollo-server": "^3.11.1",
     "apollo-server-express": "^3.11.1",
     "bcryptjs": "^2.4.3",

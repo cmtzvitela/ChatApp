@@ -1,6 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
+import Dashboard from './pages/Dashboard.jsx';
 
 function App() {
   const [data, setData] = React.useState(null);
@@ -10,14 +11,12 @@ function App() {
       .then((res) => res.json())
       .then((data) => setData(data.message));
   }, []);
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{!data ? 'Loading...' : data}</p>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

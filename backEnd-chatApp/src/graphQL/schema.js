@@ -2,11 +2,11 @@ import gql from 'graphql-tag';
 
 const typeDefs = gql`
   type User {
-    name: String!
+    username: String!
     email: String!
     password: String!
     tokens: [String]!
-    friends: [String]!
+    friends: [ID]!
   }
 
   type Query {
@@ -14,15 +14,15 @@ const typeDefs = gql`
   }
 
   input newUserInput {
-    name: String!
+    username: String!
     email: String!
     password: String!
     tokens: [String]!
-    friends: [String]!
+    friends: [ID]!
   }
 
   type Mutation {
-    newUser(input: newUserInput!): User!
+    createUser(input: newUserInput!): User!
   }
 `;
 
