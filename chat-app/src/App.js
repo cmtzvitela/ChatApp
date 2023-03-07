@@ -2,19 +2,17 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Dashboard from './pages/Dashboard.jsx';
+import SignUp from './pages/SignUp.jsx';
+import PageLayout from './pages/PageLayout.jsx';
 
 function App() {
-  const [data, setData] = React.useState(null);
-
-  React.useEffect(() => {
-    fetch('/test')
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<PageLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
