@@ -4,6 +4,7 @@ import './App.css';
 import Dashboard from './pages/Dashboard.jsx';
 import SignUp from './pages/SignUp.jsx';
 import PageLayout from './pages/PageLayout.jsx';
+import LogIn from './pages/LogIn.jsx';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<PageLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<LogIn />} />
         </Route>
       </Routes>
     </BrowserRouter>

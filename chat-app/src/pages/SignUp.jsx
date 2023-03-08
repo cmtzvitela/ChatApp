@@ -1,10 +1,36 @@
-import { Box, TextField, Grid, Paper, Typography } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Grid,
+  Paper,
+  Typography,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+} from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Stack } from '@mui/system';
 import GeneralPurposeButton from '../components/GeneralComponents/GeneralPurposeButton';
+import { validateEmail } from '../utilities/validation.js';
+import { useState } from 'react';
 
 export default function SignUp() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   return (
-    <Grid spacing={2} sx={{ display: 'flex' }}>
+    <Grid sx={{ display: 'flex' }}>
       <Box sx={{ display: 'flex', width: '40%' }}>
         <img
           style={{ margin: 'auto', maxWidth: '100%' }}
@@ -86,9 +112,59 @@ export default function SignUp() {
               Sign Up
             </Typography>
             <TextField required id="username" label="Username" defaultValue="" />
-            <TextField required id="email" label="Email" defaultValue="" />
-            <TextField required id="password" label="Password" defaultValue="" />
-            <TextField required id="confirmPassword" label="Confirm Password" defaultValue="" />
+            <TextField
+              required
+              id="email"
+              label="Email"
+              placeholder="example@mail.com"
+              helperText=""
+              onChange={function (event) {
+                if (!validateEmail(event.target.value)) {
+                  console.log(event.target.value);
+                  this.helperText = 'Please enter a valid email';
+                }
+              }}
+            />
+            <FormControl required variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+              <OutlinedInput
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+              />
+            </FormControl>
+            <FormControl required variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-password">Confirm password</InputLabel>
+              <OutlinedInput
+                id="confirmPassword"
+                type={showPassword ? 'text' : 'password'}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Confirm password"
+              />
+            </FormControl>
             <GeneralPurposeButton buttonText="Submit"></GeneralPurposeButton>
           </Stack>
         </Paper>
