@@ -2,9 +2,20 @@ import validator from 'validator';
 
 function validateEmail(email) {
   if (!validator.isEmail(email)) {
-    throw new Error('This is not a valid email');
+    return false;
   }
   return true;
 }
 
-export { validateEmail };
+function validatePassword(password) {
+  return validator.isStrongPassword(password, {
+    minLength: 8,
+    minLowercase: 1,
+    minUppercase: 0,
+    minNumbers: 1,
+    minSymbols: 1,
+    returnScore: false,
+  });
+}
+
+export { validateEmail, validatePassword };

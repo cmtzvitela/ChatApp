@@ -3,6 +3,7 @@ import validator from 'validator';
 import variables from '../config/config.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import multer from 'multer';
 
 export interface IUser {
   username: string;
@@ -10,6 +11,7 @@ export interface IUser {
   password: string;
   tokens: Array<string>;
   friends: Array<Types.ObjectId>;
+  avatar: Buffer;
 }
 
 interface IUserMethods {
@@ -50,6 +52,9 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
           throw new Error("Password cannot contain the word 'password'");
         }
       },
+    },
+    avatar: {
+      type: Buffer,
     },
     tokens: [
       {
@@ -92,7 +97,7 @@ userSchema.static('findByCredentials', async (email: string, password: string) =
   if (!isMatch) {
     throw new Error('Wrong password');
   }
-  
+
   return user;
 });
 
