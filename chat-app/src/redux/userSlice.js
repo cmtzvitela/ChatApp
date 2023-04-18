@@ -11,9 +11,16 @@ export const userSlice = createSlice({
       state.profile = payload;
       state.loggedIn = true;
     },
+    setUserSearch: (state, { payload }) => {
+      state.search = payload;
+    },
+    logOut: (state) => {
+      state.profile = null;
+      state.loggedIn = false;
+    },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, logOut, setUserSearch } = userSlice.actions;
 
 export default userSlice.reducer;

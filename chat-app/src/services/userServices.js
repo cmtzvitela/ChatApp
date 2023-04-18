@@ -19,3 +19,15 @@ export async function userSignUp(user) {
   console.log('SignUp promise', getSignUpPromise.data);
   return getSignUpPromise.data;
 }
+
+export async function searchUser({ username }) {
+  try {
+    const getUsersArray = await axios.get(routes.searchUser, {
+      username,
+    });
+    console.log('🚀 ~ getUsersArray:', getUsersArray.data);
+    return getUsersArray.data;
+  } catch (e) {
+    throw new Error('Users could not be retrieved');
+  }
+}

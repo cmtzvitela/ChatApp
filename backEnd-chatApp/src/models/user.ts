@@ -1,6 +1,5 @@
-import { model, SchemaType, Types, Schema, Model } from 'mongoose';
+import { model, Types, Schema, Model } from 'mongoose';
 import validator from 'validator';
-import variables from '../config/config.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import multer from 'multer';
@@ -11,7 +10,8 @@ export interface IUser {
   password: string;
   tokens: Array<string>;
   friends: Array<Types.ObjectId>;
-  avatar: Buffer;
+  avatar: String;
+  friendRequests: Array<Types.ObjectId>;
 }
 
 interface IUserMethods {
@@ -54,7 +54,7 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
       },
     },
     avatar: {
-      type: Buffer,
+      type: String,
     },
     tokens: [
       {
@@ -68,6 +68,18 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
       {
         id: {
           type: Schema.Types.ObjectId,
+        },
+      },
+    ],
+    friendRequests: [
+      {
+        requestorID: {
+          type: String,
+          required: true,
+        },
+        status: {
+          type: Boolean,
+          required: true,
         },
       },
     ],

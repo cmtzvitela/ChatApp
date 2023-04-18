@@ -31,6 +31,9 @@ const userSchema = new Schema({
             }
         },
     },
+    avatar: {
+        type: String,
+    },
     tokens: [
         {
             token: {
@@ -43,6 +46,18 @@ const userSchema = new Schema({
         {
             id: {
                 type: Schema.Types.ObjectId,
+            },
+        },
+    ],
+    friendRequests: [
+        {
+            requestorID: {
+                type: String,
+                required: true,
+            },
+            status: {
+                type: Boolean,
+                required: true,
             },
         },
     ],

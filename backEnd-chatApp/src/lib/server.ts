@@ -1,8 +1,16 @@
 import express from 'express';
 import cors from 'cors';
 import router from '../routers/userRoutes.js';
+import { Server } from 'socket.io';
+import http from 'http';
 
 const app = express();
+const eServer = http.createServer(app);
+const io = new Server(eServer, {
+  cors: {
+    origin: 'https://localhost:3001',
+  },
+});
 
 app.use(express.json());
 
@@ -14,4 +22,8 @@ app.get('/signin', (req, res) => {
 
 app.use(router);
 
-export default app;
+io.on('connection', (socket) => {
+  console.log('A user connected');
+});
+
+export default eServer;

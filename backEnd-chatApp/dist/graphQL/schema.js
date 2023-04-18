@@ -6,11 +6,13 @@ const typeDefs = gql `
     password: String!
     tokens: [String]!
     friends: [ID]!
+    friendRequests: [friendRequest]
   }
   type loggedUser {
     username: String!
     email: String!
     friends: [ID]!
+    friendRequests: [friendRequest]
   }
 
   input newUserInput {
@@ -19,6 +21,17 @@ const typeDefs = gql `
     password: String!
     tokens: [String]!
     friends: [ID]!
+    friendRequests: [friendRequestInput]!
+  }
+
+  input friendRequestInput {
+    requestorID: String!
+    status: Boolean!
+  }
+
+  type friendRequest {
+    requestorID: String!
+    status: Boolean!
   }
 
   input userID {
