@@ -7,6 +7,7 @@ import SignUp from './pages/SignUp.jsx';
 import PageLayout from './pages/PageLayout.jsx';
 import LogIn from './pages/LogIn.jsx';
 import HomePage from './pages/HomePage.jsx';
+import Chat from './components/chat/Chat.jsx';
 
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
@@ -22,7 +23,7 @@ function App() {
     }
 
     function onFooEvent(value) {
-      setFooEvents(previous => [...previous, value]);
+      setFooEvents((previous) => [...previous, value]);
     }
 
     socket.on('connect', onConnect);
@@ -43,6 +44,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<LogIn />} />
+          <Route path="/chat" element={<Chat />} />
         </Route>
       </Routes>
     </BrowserRouter>
