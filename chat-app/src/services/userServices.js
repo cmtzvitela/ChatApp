@@ -31,3 +31,11 @@ export async function searchUser({ username }) {
     throw new Error('Users could not be retrieved');
   }
 }
+
+export async function sendMessage(message) {
+  axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+  console.log('🚀 ~ message:', message);
+  const sendMessagePromise = await axios.post(routes.sendMessage, message);
+  console.log('Message sent', sendMessagePromise.data);
+  return sendMessagePromise.data.message;
+}

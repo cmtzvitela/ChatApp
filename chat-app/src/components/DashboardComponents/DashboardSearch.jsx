@@ -1,20 +1,37 @@
 import { Container, TextField } from '@mui/material';
 import React from 'react';
-import InteractiveList from '../GeneralComponents/ListComponent';
 import GeneralPurposeButton from '../GeneralComponents/GeneralPurposeButton';
-import { sagasSearch } from '../../redux/sagaActions.js';
+import { gql, useMutation } from '@apollo/client';
+import { useSelector } from 'react-redux';
 
-export default function DashboardSearch(searchUser) {
-  function handleSearch() {
-    try {
-      dispatchEvent(sagasSearch(searchUser));
-    } catch (e) {}
+const CREATE_FRIEND_REQUEST = gql`
+  mutation CreateFriendRequest($input: friendRequestInput!) {
+    createFriendRequest(input: $input) {
+      friendEmail
+      requestorID
+    }
   }
+`;
+
+export default function DashboardSearch({ searchUser }) {
+  const userID = useSelector((state) => state.user.profile._id);
+  const [createFriendRequest, { data, loading, error }] = useMutation(CREATE_FRIEND_REQUEST);
   return (
     <Container>
       <TextField id="outlined-search" label="Search user..." type="search" />
-      <GeneralPurposeButton buttonText="Search" onClick={handleSearch}></GeneralPurposeButton>
-      <InteractiveList></InteractiveList>
+      <GeneralPurposeButton
+        buttonText="Add Friend"
+        onClick={() =>
+          createFriendRequest({
+            variables: {
+              input: {
+                friendEmail: searchUser,
+                requestorID: userID,
+              },
+            },
+          })
+        }
+      ></GeneralPurposeButton>
     </Container>
   );
 }

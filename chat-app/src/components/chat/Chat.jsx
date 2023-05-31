@@ -1,17 +1,31 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Grid, Paper, Tabs, Tab } from '@mui/material';
+import { Grid, Paper, Tabs, Tab, Typography } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { gql, useQuery, useMutation } from '@apollo/client';
 
 import ChatBox from './ChatBox.jsx';
 import Conversations from './Conversations.jsx';
 import Users from './Users.jsx';
 
+const GET_USER_FRIENDS = gql`
+  query GetUserFriends($input: [userID]) {
+    getUserFriends(input: $input) {
+      avatar
+      email
+      username
+    }
+  }
+`;
+
 export default function Chat() {
+  const friends = useSelector((state) => state.user.profile.friends);
+  console.log('🚀 ~ friends:', friends);
   const [tab, setTab] = useState(0);
   const [user, setUser] = useState(null);
 
-  const handleChange = (e, newVal) => {
-    setTab(newVal);
-  };
+  const { loading, error, data } = useQuery(GET_USER_FRIENDS, {
+    variables: { input: [{ id: '645e80ba431ad2474a694972' }, { id: '645e80f3431ad2474a694976' }] },
+  });
 
   return (
     <Fragment>
@@ -19,23 +33,13 @@ export default function Chat() {
         <Grid item md={4}>
           <Paper square elevation={5}>
             <Paper square>
-              <Tabs
-                onChange={handleChange}
-                variant="fullWidth"
-                value={tab}
-                indicatorColor="primary"
-                textColor="primary"
-              >
-                <Tab label="Chats" />
-                <Tab label="Users" />
-              </Tabs>
+              <Typography> Chats</Typography>
             </Paper>
-            {tab === 0 && <Conversations />}
-            {tab === 1 && <Users />}
+            <Users friends={data.getUserFriends} />
           </Paper>
         </Grid>
         <Grid item md={8}>
-          <ChatBox />
+          <ChatBox scope={tab} />
         </Grid>
       </Grid>
     </Fragment>

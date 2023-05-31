@@ -11,6 +11,7 @@ import {
   Badge,
   MenuItem,
   Menu,
+  Button,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu.js';
 import SearchIcon from '@mui/icons-material/Search.js';
@@ -18,6 +19,8 @@ import AccountCircle from '@mui/icons-material/AccountCircle.js';
 import MailIcon from '@mui/icons-material/Mail.js';
 import NotificationsIcon from '@mui/icons-material/Notifications.js';
 import MoreIcon from '@mui/icons-material/MoreVert.js';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -62,7 +65,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user.loggedIn);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -70,6 +74,13 @@ export default function PrimarySearchAppBar() {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleHomePageClick = () => {
+    if (user === true) {
+      navigate('/dashboard', { replace: true });
+    } else {
+      navigate('/', { replace: true });
+    }
+  };
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
@@ -83,9 +94,7 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleSearchInput = (searchTerm) => {
-    
-  };
+  const handleSearchInput = (searchTerm) => {};
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -163,9 +172,9 @@ export default function PrimarySearchAppBar() {
           <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Button onClick={handleHomePageClick} variant="text" sx={{ fontSize: '20px', color: 'white' }}>
             MUI
-          </Typography>
+          </Button>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
