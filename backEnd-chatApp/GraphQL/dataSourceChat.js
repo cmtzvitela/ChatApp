@@ -13,4 +13,9 @@ export default class ChatAPI extends RESTDataSource {
   async createMessage(newMessage) {
     return this.post(`message`, { body: newMessage });
   }
+
+  async getConversation(participantObject) {
+    console.log('🚀 ~ participantObject:', participantObject);
+    return this.get(`chat/${participantObject.participant1}&${participantObject.participant2}`);
+  }
 }

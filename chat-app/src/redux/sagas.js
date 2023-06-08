@@ -1,10 +1,9 @@
 import { userLogin, searchUser } from '../services/userServices.js';
-import { setUser, setUserSearch } from './userSlice.js';
+import { setUser, setUserSearch, setActiveConversation } from './userSlice.js';
 import { call, takeEvery, put, all } from 'redux-saga/effects';
-import { sagasLogin, sagasSearch } from './sagaActions.js';
+import { sagasConversation, sagasLogin, sagasSearch } from './sagaActions.js';
 
 export function* userLoginSaga(action) {
-  console.log('action', action);
   try {
     let user = yield call(userLogin, action.payload.email, action.payload.password);
     console.log('user', user);
@@ -24,13 +23,22 @@ export function* userSearchSaga(action) {
   }
 }
 
+export function* activeConversationSaga(action) {
+  console.log('🚀 ~ action:', action.payload);
+  yield put(setActiveConversation(action.payload));
+}
+
 export function* watchUserLogin() {
   yield takeEvery(sagasLogin, userLoginSaga);
 }
-export function* watchUserSearch(){
+export function* watchUserSearch() {
   yield takeEvery(sagasSearch, userSearchSaga);
 }
 
+export function* watchActiveConversation() {
+  yield takeEvery(sagasConversation, activeConversationSaga);
+}
+
 export default function* rootSaga() {
-  yield all([watchUserLogin()]);
+  yield all([watchUserLogin(), watchActiveConversation()]);
 }

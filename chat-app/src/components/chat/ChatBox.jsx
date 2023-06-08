@@ -35,8 +35,11 @@ const CREATE_MESSAGE = gql`
     }
   }
 `;
-const conversationID = { conversationID: '6452e689d2a731fde8b76c25' };
+
 export default function ChatBox({ scope }) {
+  const conversationID = useSelector((state) => {
+    return state.user.activeConversation;
+  });
   const [newMessage, setNewMessage] = useState('');
   const userID = useSelector((state) => state.user.profile._id);
   console.log('🚀 ~ userID:', userID);
@@ -44,7 +47,7 @@ export default function ChatBox({ scope }) {
 
   const [createNewMessage, { data: data2, loading2: loading2, error: error2 }] = useMutation(CREATE_MESSAGE);
   const { loading, error, data } = useQuery(GET_MESSAGES, {
-    variables: { input: conversationID },
+    variables: { input: { conversationID: conversationID } },
   });
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
@@ -99,8 +102,8 @@ export default function ChatBox({ scope }) {
                         variables: {
                           input: {
                             body: newMessage,
-                            conversationID: '6452e689d2a731fde8b76c25',
-                            senderID: '64248257460053c9e3c5ca96',
+                            conversationID: conversationID,
+                            senderID: userID,
                           },
                         },
                       })

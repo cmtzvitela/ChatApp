@@ -25,12 +25,7 @@ export default function Workspace() {
         </Grid>
         <Button onClick={navigateToChat}>CHAT</Button>
         <Grid container>
-          <DashboardSearch
-            searchUser={searchUser}
-            onChange={function (event) {
-              return setSearchUser(event.target.value);
-            }}
-          ></DashboardSearch>
+          <DashboardSearch />
         </Grid>
       </Grid>
     </Container>

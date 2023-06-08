@@ -13,6 +13,8 @@ export default class UserAPI extends RESTDataSource {
 
   async createFriendRequest(friendRequest) {
     console.log('🚀 ~ friendRequest:', friendRequest);
-    return await this.patch('/friendRequests', { body: friendRequest });
+    const friendR = await this.post('/friendRequests', { body: friendRequest });
+    console.log('🚀 ~ friendR:', friendR);
+    return friendR;
   }
 }

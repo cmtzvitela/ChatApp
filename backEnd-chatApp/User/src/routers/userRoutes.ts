@@ -31,14 +31,15 @@ router.post('/login', async (req: any, res: any) => {
   }
 });
 
-router.patch('/friendRequests', async (req: any, res: any) => {
+router.post('/friendRequests', async (req: any, res: any) => {
   try {
     const requested: any = await User.find({ email: req.body.friendEmail });
     console.log('🚀 ~ requested:', requested[0]);
-    requested[0].friendRequests.push({ requestorID: req.body.requestorID, status: false });
+    const newFriendRequest = { requestorID: req.body.requestorID, status: false };
+    requested[0].friendRequests.push(newFriendRequest);
     console.log('🚀 ~ req-body.friendRequest:', requested[0].friendRequests);
-    await requested.save();
-    res.send('This is the updated object', { requested });
+    await requested[0].save();
+    res.send(newFriendRequest);
   } catch (e) {
     res.status(400).send("Couldn't send request");
   }

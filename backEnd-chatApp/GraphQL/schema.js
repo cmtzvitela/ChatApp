@@ -24,6 +24,7 @@ const typeDefs = gql`
     username: String!
     email: String!
     avatar: String!
+    _id: String!
   }
   type GenericUser implements User {
     username: String!
@@ -37,9 +38,8 @@ const typeDefs = gql`
   }
 
   type conversation {
-    participants: [participantObject]
-    name: String!
-    isGroup: Boolean!
+    participant1: String!
+    participant2: String!
   }
 
   type participantObject {
@@ -67,14 +67,17 @@ const typeDefs = gql`
   }
 
   type friendRequest {
-    friendEmail: String!
     requestorID: String!
+    status: Boolean!
   }
 
   input userID {
     id: ID!
   }
 
+  type conversationIDType {
+    _id: String!
+  }
   input conversationID {
     conversationID: String!
   }
@@ -86,15 +89,15 @@ const typeDefs = gql`
   }
 
   input conversationInput {
-    participants: [participantObjectInput]!
-    name: String!
-    isGroup: Boolean!
+    participant1: String!
+    participant2: String!
   }
 
   type Query {
     me(input: userID): Me!
     conversationMessages(input: conversationID): [singleMessage]
     getUserFriends(input: [userID]): [FriendUser]
+    getConversation(input: conversationInput): conversationIDType
   }
   type Mutation {
     createUser(input: newUserInput!): createUserResponse

@@ -2,20 +2,8 @@ import { Schema, model } from 'mongoose';
 
 const conversationSchema = new Schema(
   {
-    participants: [
-      {
-        participantID: {
-          type: String,
-          required: true,
-        },
-        isAdmin: {
-          type: Boolean,
-          required: true,
-        },
-      },
-    ],
-    name: { type: String },
-    isGroup: Boolean,
+    participant1: { type: String },
+    participant2: { type: String },
   },
   { timestamps: true }
 );

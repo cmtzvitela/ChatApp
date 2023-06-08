@@ -10,6 +10,7 @@ import Users from './Users.jsx';
 const GET_USER_FRIENDS = gql`
   query GetUserFriends($input: [userID]) {
     getUserFriends(input: $input) {
+      _id
       avatar
       email
       username
@@ -20,12 +21,17 @@ const GET_USER_FRIENDS = gql`
 export default function Chat() {
   const friends = useSelector((state) => state.user.profile.friends);
   console.log('🚀 ~ friends:', friends);
-  const [tab, setTab] = useState(0);
   const [user, setUser] = useState(null);
 
   const { loading, error, data } = useQuery(GET_USER_FRIENDS, {
-    variables: { input: [{ id: '645e80ba431ad2474a694972' }, { id: '645e80f3431ad2474a694976' }] },
+    variables: {
+      input: [{ id: '645e80ba431ad2474a694972' }, { id: '645e80f3431ad2474a694976' }],
+    },
   });
+
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <Fragment>
@@ -39,7 +45,7 @@ export default function Chat() {
           </Paper>
         </Grid>
         <Grid item md={8}>
-          <ChatBox scope={tab} />
+          <ChatBox />
         </Grid>
       </Grid>
     </Fragment>

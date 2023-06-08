@@ -5,6 +5,7 @@ export const userSlice = createSlice({
   initialState: {
     profile: {},
     loggedIn: false,
+    activeConversation: '',
   },
   reducers: {
     setUser: (state, { payload }) => {
@@ -18,9 +19,13 @@ export const userSlice = createSlice({
       state.profile = null;
       state.loggedIn = false;
     },
+    setActiveConversation: (state, { payload }) => {
+      console.log('🚀 ~ payload:', payload);
+      state.activeConversation = payload;
+    },
   },
 });
 
-export const { setUser, logOut, setUserSearch } = userSlice.actions;
+export const { setUser, logOut, setUserSearch, setActiveConversation } = userSlice.actions;
 
 export default userSlice.reducer;
