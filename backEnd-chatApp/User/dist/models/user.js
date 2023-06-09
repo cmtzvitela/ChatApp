@@ -73,6 +73,7 @@ userSchema.method('generateAuthToken', async function generateAuthToken() {
 });
 userSchema.static('findByCredentials', async (email, password) => {
     const user = await User.findOne({ email });
+    console.log('🚀 ~ user in credentials:', user);
     if (!user) {
         throw new Error('No email found');
     }

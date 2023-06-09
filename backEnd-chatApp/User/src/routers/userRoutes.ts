@@ -24,6 +24,7 @@ router.post('/signup', async (req: any, res: any) => {
 router.post('/login', async (req: any, res: any) => {
   try {
     const user: any = await User.findByCredentials(req.body.email, req.body.password);
+    console.log('🚀 ~ user in route:', user);
     const token: string = await user.generateAuthToken();
     res.send({ user, token });
   } catch (e) {
@@ -42,6 +43,21 @@ router.post('/friendRequests', async (req: any, res: any) => {
     res.send(newFriendRequest);
   } catch (e) {
     res.status(400).send("Couldn't send request");
+  }
+});
+
+router.post('/addFriend', async (req, res) => {
+  try {
+    const user: any = await User.findOne({ _id: req.body.ownID });
+    user.friends.push({ id: req.body.friendID });
+    user.friendRequests.filter((request) => {
+      request !== req.body.friendID;
+    });
+    user.save();
+    res.status(201).send(user);
+    return user;
+  } catch (e) {
+    res.status(400).send(e);
   }
 });
 
@@ -72,6 +88,7 @@ router.get('/user/:id', async (req: any, res: any) => {
     res.status(400).send('Users could not be retrieved');
   }
 });
+
 // const upload = multer({
 //   limits: {
 //     fileSize: 1000000,

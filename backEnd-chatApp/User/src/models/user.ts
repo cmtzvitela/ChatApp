@@ -9,7 +9,7 @@ export interface IUser {
   email: string;
   password: string;
   tokens: Array<string>;
-  friends: Array<Types.ObjectId>;
+  friends: Array<string>;
   avatar: String;
   friendRequests: Array<Types.ObjectId>;
 }
@@ -100,6 +100,7 @@ userSchema.method('generateAuthToken', async function generateAuthToken() {
 
 userSchema.static('findByCredentials', async (email: string, password: string) => {
   const user = await User.findOne({ email });
+  console.log('🚀 ~ user in credentials:', user);
 
   if (!user) {
     throw new Error('No email found');

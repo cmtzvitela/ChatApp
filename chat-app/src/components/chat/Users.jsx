@@ -1,5 +1,5 @@
-import react, { Fragment, useState } from 'react';
-import { List, ListItem, ListItemText, ListItemAvatar, Avatar } from '@mui/material';
+import { Fragment } from 'react';
+import { List } from '@mui/material';
 
 import User from './User.jsx';
 

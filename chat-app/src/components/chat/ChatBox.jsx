@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Grid,
   Typography,
@@ -9,12 +9,10 @@ import {
   ListItemText,
   ListItemAvatar,
   Avatar,
-  Divider,
 } from '@mui/material';
-import { Send, Apps } from '@mui/icons-material';
+import { Send } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import { gql, useQuery, useMutation } from '@apollo/client';
-import { sendMessage } from '../../services/userServices';
 
 const GET_MESSAGES = gql`
   query ConversationMessages($input: conversationID) {
@@ -45,7 +43,7 @@ export default function ChatBox({ scope }) {
   console.log('🚀 ~ userID:', userID);
   let chatBottom = useRef(null);
 
-  const [createNewMessage, { data: data2, loading2: loading2, error: error2 }] = useMutation(CREATE_MESSAGE);
+  const [createNewMessage] = useMutation(CREATE_MESSAGE);
   const { loading, error, data } = useQuery(GET_MESSAGES, {
     variables: { input: { conversationID: conversationID } },
   });

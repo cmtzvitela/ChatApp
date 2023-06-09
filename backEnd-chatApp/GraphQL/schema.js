@@ -76,7 +76,7 @@ const typeDefs = gql`
   }
 
   type conversationIDType {
-    _id: String!
+    _id: String
   }
   input conversationID {
     conversationID: String!

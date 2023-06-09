@@ -1,10 +1,9 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { Grid, Paper, Tabs, Tab, Typography } from '@mui/material';
+import React, { Fragment } from 'react';
+import { Grid, Paper, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { gql, useQuery, useMutation } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 
 import ChatBox from './ChatBox.jsx';
-import Conversations from './Conversations.jsx';
 import Users from './Users.jsx';
 
 const GET_USER_FRIENDS = gql`
@@ -21,16 +20,20 @@ const GET_USER_FRIENDS = gql`
 export default function Chat() {
   const friends = useSelector((state) => state.user.profile.friends);
   console.log('🚀 ~ friends:', friends);
-  const [user, setUser] = useState(null);
-
   const { loading, error, data } = useQuery(GET_USER_FRIENDS, {
     variables: {
-      input: [{ id: '645e80ba431ad2474a694972' }, { id: '645e80f3431ad2474a694976' }],
+      input: friends.map((friend) => {
+        return { id: friend.id };
+      }),
     },
   });
 
   if (loading) {
     return <h1>Loading...</h1>;
+  }
+
+  if (error) {
+    return <h1>{error}</h1>;
   }
 
   return (

@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import DashboardSearch from '../DashboardComponents/DashboardSearch';
+import DashboardCreateGroup from './CreateGroupChatModal.jsx';
+import CreateGroupChatModal from './CreateGroupChatModal.jsx';
 
 export default function Workspace() {
   const user = useSelector((state) => state.user.profile);
@@ -26,6 +28,9 @@ export default function Workspace() {
         <Button onClick={navigateToChat}>CHAT</Button>
         <Grid container>
           <DashboardSearch />
+        </Grid>
+        <Grid container>
+          <CreateGroupChatModal/>
         </Grid>
       </Grid>
     </Container>

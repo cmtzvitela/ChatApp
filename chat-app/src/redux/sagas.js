@@ -6,7 +6,7 @@ import { sagasConversation, sagasLogin, sagasSearch } from './sagaActions.js';
 export function* userLoginSaga(action) {
   try {
     let user = yield call(userLogin, action.payload.email, action.payload.password);
-    console.log('user', user);
+    console.log('userSaga', user);
     yield put(setUser(user));
   } catch (e) {
     yield put({ type: 'USER_LOGIN_FAILED' });

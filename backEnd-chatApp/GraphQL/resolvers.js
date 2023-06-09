@@ -19,7 +19,6 @@ const resolvers = {
       return messagesArray;
     },
     async getUserFriends(_, { input }, context) {
-      console.log('🚀 ~ input:', input);
       const friendArray = [];
       input.map((element) => {
         const friend = context.dataSources.UserAPI.findUserById(element.id);
@@ -28,10 +27,12 @@ const resolvers = {
       return friendArray;
     },
     async getConversation(_, { input }, context) {
-      console.log('🚀 ~ input:', input);
       const conversation = await context.dataSources.ChatAPI.getConversation(input);
-      console.log('🚀 ~ conversation:', conversation[0]._id);
-      return { _id: conversation[0]._id };
+      if (conversation !== true) {
+        const createdConversation = await context.dataSources.ChatAPI.createConversation(input);
+        return { _id: createdConversation._id };
+      }
+      return { _id: conversation._id };
     },
   },
   Mutation: {
