@@ -15,6 +15,7 @@ const resolvers = {
       return user;
     },
     async conversationMessages(_, { input }, context) {
+      console.log('🚀 ~ input:', input);
       const messagesArray = await context.dataSources.ChatAPI.getMessages(input.conversationID);
       return messagesArray;
     },
@@ -28,7 +29,9 @@ const resolvers = {
     },
     async getConversation(_, { input }, context) {
       const conversation = await context.dataSources.ChatAPI.getConversation(input);
-      if (conversation !== true) {
+      console.log('🚀 ~ conversation:', conversation);
+      if (!conversation) {
+        console.log('Inside the if');
         const createdConversation = await context.dataSources.ChatAPI.createConversation(input);
         return { _id: createdConversation._id };
       }
@@ -49,6 +52,12 @@ const resolvers = {
       const newFriendRequest = await context.dataSources.UserAPI.createFriendRequest(input);
       console.log('🚀 ~ newFriendRequest:', newFriendRequest);
       return newFriendRequest;
+    },
+    async createGroupConversation(_, { input }, context) {
+      console.log('🚀 ~ input in resolver:', input);
+      const newGroupConversation = await context.dataSources.ChatAPI.createGroupConversation(input);
+      console.log('🚀 ~ newGroupConversation:', newGroupConversation);
+      return newGroupConversation;
     },
   },
   // Subscription: {

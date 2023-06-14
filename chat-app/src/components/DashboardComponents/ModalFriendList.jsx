@@ -3,6 +3,7 @@ import { List } from '@mui/material';
 import UserModal from './UserModal.jsx';
 
 export default function ModalFriendList({ friends }) {
+  
   return (
     <List sx={{ backgroundColor: '#ededed', borderRadius: '5px' }}>
       {friends && (

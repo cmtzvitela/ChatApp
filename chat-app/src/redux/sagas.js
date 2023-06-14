@@ -1,7 +1,19 @@
 import { userLogin, searchUser } from '../services/userServices.js';
-import { setUser, setUserSearch, setActiveConversation } from './userSlice.js';
+import {
+  setUser,
+  setUserSearch,
+  setActiveConversation,
+  setGroupChatParticipants,
+  setChatMessages,
+} from './userSlice.js';
 import { call, takeEvery, put, all } from 'redux-saga/effects';
-import { sagasConversation, sagasLogin, sagasSearch } from './sagaActions.js';
+import {
+  sagasConversation,
+  sagasGroupParticipants,
+  sagasLogin,
+  sagasSearch,
+  sagasChatMessages,
+} from './sagaActions.js';
 
 export function* userLoginSaga(action) {
   try {
@@ -28,6 +40,15 @@ export function* activeConversationSaga(action) {
   yield put(setActiveConversation(action.payload));
 }
 
+export function* groupChatParticipants(action) {
+  console.log('🚀 ~ action groupPart:', action);
+  yield put(setGroupChatParticipants(action.payload));
+}
+
+export function* chatMessages(action) {
+  yield put(setChatMessages(action.payload));
+}
+
 export function* watchUserLogin() {
   yield takeEvery(sagasLogin, userLoginSaga);
 }
@@ -39,6 +60,13 @@ export function* watchActiveConversation() {
   yield takeEvery(sagasConversation, activeConversationSaga);
 }
 
+export function* watchGroupParticipants() {
+  yield takeEvery(sagasGroupParticipants, groupChatParticipants);
+}
+export function* watchChatMessages() {
+  yield takeEvery(sagasChatMessages, chatMessages);
+}
+
 export default function* rootSaga() {
-  yield all([watchUserLogin(), watchActiveConversation()]);
+  yield all([watchUserLogin(), watchActiveConversation(), watchGroupParticipants(), watchChatMessages()]);
 }

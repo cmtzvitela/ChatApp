@@ -12,17 +12,7 @@ import {
 } from '@mui/material';
 import { Send } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
-import { gql, useQuery, useMutation } from '@apollo/client';
-
-const GET_MESSAGES = gql`
-  query ConversationMessages($input: conversationID) {
-    conversationMessages(input: $input) {
-      body
-      createdAt
-      senderID
-    }
-  }
-`;
+import { gql, useLazyQuery, useMutation } from '@apollo/client';
 
 const CREATE_MESSAGE = gql`
   mutation CreateMessage($input: messageInput!) {
@@ -34,23 +24,18 @@ const CREATE_MESSAGE = gql`
   }
 `;
 
-export default function ChatBox({ scope }) {
+export default function ChatBox({ conversationMessages, scope }) {
   const conversationID = useSelector((state) => {
     return state.user.activeConversation;
   });
+  console.log('🚀 ~ conversationID:', conversationID);
   const [newMessage, setNewMessage] = useState('');
   const userID = useSelector((state) => state.user.profile._id);
   console.log('🚀 ~ userID:', userID);
   let chatBottom = useRef(null);
 
   const [createNewMessage] = useMutation(CREATE_MESSAGE);
-  const { loading, error, data } = useQuery(GET_MESSAGES, {
-    variables: { input: { conversationID: conversationID } },
-  });
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
-  // console.log(error);
-  console.log(data.conversationMessages);
+
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -64,16 +49,17 @@ export default function ChatBox({ scope }) {
         <Grid container>
           <Grid item xs={12} sx={{ textAlignLast: 'right' }}>
             <List>
-              {data.conversationMessages.map((element, index) => {
-                return (
-                  <ListItem key={index} sx={{ flexDirection: 'row-reverse' }}>
-                    <ListItemAvatar>
-                      <Avatar sx={{ marginLeft: '10px' }}>Avatar</Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary={element.senderID} secondary={element.body} />
-                  </ListItem>
-                );
-              })}
+              {conversationMessages &&
+                conversationMessages.map((element, index) => {
+                  return (
+                    <ListItem key={index} sx={{ flexDirection: 'row-reverse' }}>
+                      <ListItemAvatar>
+                        <Avatar sx={{ marginLeft: '10px' }}>Avatar</Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary={element.senderID} secondary={element.body} />
+                    </ListItem>
+                  );
+                })}
             </List>
             <div ref={chatBottom} />
           </Grid>

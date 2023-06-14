@@ -1,5 +1,6 @@
 import express from 'express';
 import Conversation from '../models/conversation.js';
+import GroupConversation from '../models/groupConversation.js';
 
 const conversationRouter = express.Router();
 
@@ -17,6 +18,26 @@ conversationRouter.post('/chat/:participant1&:participant2', async (req, res) =>
   }
 });
 
+conversationRouter.post('/groupChat', async (req, res) => {
+  console.log('🚀 ~ req.body:', req.body);
+  const participantArray = [];
+  req.body.participants.map((participant) => {
+    return participantArray.push(participant);
+  });
+  const newGroupConversation = new GroupConversation({
+    participants: participantArray,
+    groupName: req.body.groupName,
+    creatorID: req.body.creatorID,
+  });
+  console.log('🚀 ~ newGroupConversation:', newGroupConversation);
+  try {
+    await newGroupConversation.save();
+    res.status(201).send(newGroupConversation);
+  } catch (e) {
+    res.status(400).send(e);
+    console.log(e);
+  }
+});
 conversationRouter.get('/chat/:participant1&:participant2', async (req, res) => {
   const conversation = await Conversation.findOne({
     $or: [

@@ -19,7 +19,7 @@ const GET_USER_FRIENDS = gql`
 
 export default function Chat() {
   const friends = useSelector((state) => state.user.profile.friends);
-  console.log('🚀 ~ friends:', friends);
+  const conversationID = useSelector((state) => state.user.profile.activeConversation);
   const { loading, error, data } = useQuery(GET_USER_FRIENDS, {
     variables: {
       input: friends.map((friend) => {
@@ -27,7 +27,6 @@ export default function Chat() {
       }),
     },
   });
-
   if (loading) {
     return <h1>Loading...</h1>;
   }
@@ -46,9 +45,15 @@ export default function Chat() {
             </Paper>
             <Users friends={data.getUserFriends} />
           </Paper>
+          <Paper square elevation={5}>
+            <Paper square>
+              <Typography> Groups </Typography>
+            </Paper>
+            <Users friends={data.getUserFriends} />
+          </Paper>
         </Grid>
         <Grid item md={8}>
-          <ChatBox />
+          <ChatBox conversationMessages={conversationMessages} />
         </Grid>
       </Grid>
     </Fragment>

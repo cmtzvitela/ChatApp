@@ -23,9 +23,18 @@ export const userSlice = createSlice({
       console.log('🚀 ~ payload:', payload);
       state.activeConversation = payload;
     },
+    setGroupChatParticipants: (state, { payload }) => {
+      console.log('🚀 ~ payload participant:', payload);
+      state.groupChatParticipants = payload;
+    },
+    setChatMessages: (state, { payload }) => {
+      console.log('🚀 ~ payload messages:', payload);
+      state.chatMessages = payload;
+    },
   },
 });
 
-export const { setUser, logOut, setUserSearch, setActiveConversation } = userSlice.actions;
+export const { setUser, logOut, setUserSearch, setActiveConversation, setGroupChatParticipants, setChatMessages } =
+  userSlice.actions;
 
 export default userSlice.reducer;

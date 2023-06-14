@@ -93,6 +93,27 @@ const typeDefs = gql`
     participant2: String!
   }
 
+  type groupConversation {
+    participants: [groupParticipant]!
+    groupName: String!
+    creatorID: String!
+  }
+
+  type groupParticipant {
+    participantID: String!
+    isGroupAdmin: Boolean!
+  }
+  input groupParticipantInput {
+    participantID: String!
+    isGroupAdmin: Boolean!
+  }
+
+  input groupConversationInput {
+    participants: [groupParticipantInput]!
+    groupName: String!
+    creatorID: String!
+  }
+
   type Query {
     me(input: userID): Me!
     conversationMessages(input: conversationID): [singleMessage]
@@ -104,6 +125,7 @@ const typeDefs = gql`
     createMessage(input: messageInput!): singleMessage
     createConversation(input: conversationInput): conversation
     createFriendRequest(input: friendRequestInput!): friendRequest
+    createGroupConversation(input: groupConversationInput!): groupConversation
   }
 
   type createUserResponse {

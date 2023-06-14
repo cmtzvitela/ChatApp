@@ -10,7 +10,6 @@ const groupConversationSchema = new Schema(
     ],
     groupName: String,
     creatorID: String,
-    groupAvatar: String,
   },
   { timestamps: true }
 );
