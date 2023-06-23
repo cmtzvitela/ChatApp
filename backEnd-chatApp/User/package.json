@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "build": "npx tsc",
-    "start": "npm run compile && nodemon ./dist/index.js",
+    "start": "npm run compile && node ./dist/index.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
-    "compile": "tsc"
+    "compile": "rimraf ./dist && tsc"
   },
   "keywords": [],
   "author": "",
@@ -38,7 +38,9 @@
     "@types/validator": "^13.7.12",
     "concurrently": "^7.6.0",
     "nodemon": "^2.0.20",
+    "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^4.9.5"
   }
 }

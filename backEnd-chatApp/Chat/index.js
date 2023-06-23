@@ -4,7 +4,7 @@ import dbConnect from './lib/db.js';
 
 dotenv.config();
 
-const port = 3005;
+const port = process.env.PORT || 3005;
 
 dbConnect()
   .then(() => {
