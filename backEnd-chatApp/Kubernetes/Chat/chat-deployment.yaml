@@ -1,0 +1,34 @@
+apiVersion: app/v1
+kind: Deployment
+metadata:
+  name: chat-deployment
+  labels:
+    app: chat
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: chat
+  minReadySeconds: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: chat
+    spec:
+      containers:
+        - name: chat
+          image: cgmartinez/chatapp:0.1
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '250m'
+            limits:
+              memory: '128Mi'
+              cpu: '500m'
+          ports:
+            - containerPort: 8082

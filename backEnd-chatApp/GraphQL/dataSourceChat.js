@@ -26,4 +26,9 @@ export default class ChatAPI extends RESTDataSource {
     console.log('🚀 ~ groupConversationObject in dataSource:', groupConversationObject);
     return this.post(`groupChat`, { body: groupConversationObject });
   }
+
+  async getGroupConversations(groupConversationObject) {
+    console.log('🚀 ~ groupConversationObject:', groupConversationObject);
+    return this.get(`groupChat/${groupConversationObject}`);
+  }
 }

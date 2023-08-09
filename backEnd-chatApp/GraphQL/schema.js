@@ -99,6 +99,13 @@ const typeDefs = gql`
     creatorID: String!
   }
 
+  type createdGroupConversation {
+    _id: ID
+    participants: [groupParticipant]!
+    groupName: String!
+    creatorID: String!
+  }
+
   type groupParticipant {
     participantID: String!
     isGroupAdmin: Boolean!
@@ -119,6 +126,7 @@ const typeDefs = gql`
     conversationMessages(input: conversationID): [singleMessage]
     getUserFriends(input: [userID]): [FriendUser]
     getConversation(input: conversationInput): conversationIDType
+    getGroupConversations(input: userID): [createdGroupConversation]
   }
   type Mutation {
     createUser(input: newUserInput!): createUserResponse

@@ -1,0 +1,10 @@
+version: '0.1'
+
+services:
+  userapi:
+    build:
+      context: .
+      target: production
+
+    ports:
+      - 3001:3001

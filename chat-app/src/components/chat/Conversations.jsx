@@ -19,7 +19,7 @@ export default function Conversations() {
 
       {conversations && (
         <Fragment>
-          {conversations.map((element) => (
+          {conversations?.map((element) => (
             <ListItem button>
               <ListItemAvatar>
                 <Avatar></Avatar>

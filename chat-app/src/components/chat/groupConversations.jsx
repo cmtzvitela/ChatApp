@@ -5,6 +5,7 @@ import { gql, useLazyQuery } from '@apollo/client';
 import User from './User.jsx';
 import { sagasChatMessages, sagasConversation } from '../../redux/sagaActions.js';
 import { useDispatch } from 'react-redux';
+import GroupConversation from './groupConversation.jsx';
 
 const GET_MESSAGES = gql`
   query ConversationMessages($input: conversationID) {
@@ -22,19 +23,13 @@ const GET_CONVERSATION_ID = gql`
     }
   }
 `;
-export default function Users({ friends }) {
+export default function GroupConversations({ groupConversations }) {
   const userID = useSelector((state) => state.user.profile._id);
   const dispatch = useDispatch();
   const [getConversationMessages, { loading: getMessagesLoading, error: getMessagesError, data: getMessagesData }] =
     useLazyQuery(GET_MESSAGES);
-  const [getConversation, { loading: getConversationLoading, error: getConversationError, data: getConversationData }] =
-    useLazyQuery(GET_CONVERSATION_ID);
   if (getMessagesLoading) return 'Loading...';
   if (getMessagesError) return `Error! ${getMessagesError.message}`;
-  console.log('🚀 ~ friends:', friends);
-
-  if (getConversationLoading) return <h1>Loading...</h1>;
-
   async function setActiveConversation(conversationID) {
     await getConversationMessages({
       variables: { input: { conversationID } },
@@ -45,23 +40,10 @@ export default function Users({ friends }) {
   }
   return (
     <List>
-      {friends && (
+      {groupConversations && (
         <Fragment>
-          {friends?.map((element, index) => (
-            <User
-              onClick={async (event, friend) => {
-                const conversationObject = await getConversation({
-                  variables: { input: { participant1: userID, participant2: friend.friendID } },
-                });
-                const conversationID = conversationObject.data.getConversation._id;
-                dispatch(sagasConversation(conversationID));
-                setActiveConversation(conversationID);
-              }}
-              key={index}
-              name={element.username}
-              avatar={element.avatar}
-              friendID={element._id}
-            />
+          {groupConversations?.map((element, index) => (
+            <GroupConversation groupName={element.groupName} key={index} />
           ))}
         </Fragment>
       )}

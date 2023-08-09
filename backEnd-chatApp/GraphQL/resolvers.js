@@ -37,6 +37,12 @@ const resolvers = {
       }
       return { _id: conversation._id };
     },
+    async getGroupConversations(_, { input }, context) {
+      console.log('🚀 ~ input:', input);
+      const groupConversations = await context.dataSources.ChatAPI.getGroupConversations(input.id);
+      console.log('🚀 ~ groupConversations:', groupConversations);
+      return groupConversations;
+    },
   },
   Mutation: {
     async createUser(_, { input }, context) {

@@ -5,6 +5,7 @@ import { gql, useQuery } from '@apollo/client';
 
 import ChatBox from './ChatBox.jsx';
 import Users from './Users.jsx';
+import GroupConversations from './groupConversations.jsx';
 
 const GET_USER_FRIENDS = gql`
   query GetUserFriends($input: [userID]) {
@@ -17,23 +18,38 @@ const GET_USER_FRIENDS = gql`
   }
 `;
 
+const GET_GROUP_CONVERSATIONS = gql`
+  query GetGroupConversations($input: userID) {
+    getGroupConversations(input: $input) {
+      groupName
+      participants {
+        isGroupAdmin
+        participantID
+      }
+      creatorID
+      _id
+    }
+  }
+`;
+
 export default function Chat() {
   const friends = useSelector((state) => state.user.profile.friends);
   const conversationID = useSelector((state) => state.user.profile.activeConversation);
-  const { loading, error, data } = useQuery(GET_USER_FRIENDS, {
+  const conversationMessages = useSelector((state) => state.user.chatMessages);
+  const userID = useSelector((state) => state.user.profile._id);
+  const getFriends = useQuery(GET_USER_FRIENDS, {
     variables: {
-      input: friends.map((friend) => {
+      input: friends?.map((friend) => {
         return { id: friend.id };
       }),
     },
   });
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
 
-  if (error) {
-    return <h1>{error}</h1>;
-  }
+  const groupConversations = useQuery(GET_GROUP_CONVERSATIONS, {
+    variables: {
+      input: { id: userID },
+    },
+  });
 
   return (
     <Fragment>
@@ -43,13 +59,14 @@ export default function Chat() {
             <Paper square>
               <Typography> Chats</Typography>
             </Paper>
-            <Users friends={data.getUserFriends} />
+            <Users friends={getFriends?.data?.getUserFriends} />
           </Paper>
           <Paper square elevation={5}>
             <Paper square>
               <Typography> Groups </Typography>
             </Paper>
-            <Users friends={data.getUserFriends} />
+            <GroupConversations groupConversations={groupConversations?.data?.getGroupConversations} />
+            {console.log(groupConversations)}
           </Paper>
         </Grid>
         <Grid item md={8}>
